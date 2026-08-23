@@ -11,3 +11,6 @@ data/predictions/*
 data/reports/*
 !data/reports/.gitkeep
 data/*.db
+ml/checkpoints/*.pth
+ml/outputs/*
+!ml/outputs/.gitkeep

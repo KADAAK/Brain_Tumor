@@ -15,7 +15,9 @@ app.add_middleware(CORSMiddleware,allow_origins=["*"],allow_methods=["*"],allow_
 app.include_router(upload.router); app.include_router(analysis.router); app.include_router(reports.router)
 
 @app.get("/api/health",tags=["system"])
-def health(): return {"status":"ok","service":"brain-tumor-ai","model":"mock"}
+def health():
+    from backend.services.segmentation_service import SegmentationService
+    return {"status":"ok","service":"brain-tumor-ai","model":SegmentationService().model_info}
 
 app.mount("/files",StaticFiles(directory=settings.processed_dir),name="files")
 app.mount("/reports",StaticFiles(directory=settings.report_dir),name="reports")

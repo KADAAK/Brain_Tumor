@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     database_path: Path = ROOT_DIR / "data" / "brain_tumor_ai.db"
     model_path: str = ""
     max_upload_size: int = 25 * 1024 * 1024
-    allowed_extensions: set[str] = {".png", ".jpg", ".jpeg", ".nii", ".gz"}
+    allowed_extensions: set[str] = {".png", ".jpg", ".jpeg", ".nii", ".nii.gz"}
     model_config = SettingsConfigDict(env_file=ROOT_DIR / ".env", extra="ignore")
 
     def ensure_directories(self) -> None:

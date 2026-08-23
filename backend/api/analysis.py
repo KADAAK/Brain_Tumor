@@ -18,11 +18,13 @@ def analyze(study_id:str):
     if not study: raise HTTPException(404,"Study not found.")
     try: image,spacing=ImageService().load(settings.upload_dir/study["filename"])
     except ImageLoadError as exc: raise HTTPException(422,str(exc)) from exc
-    prepared=preprocess(image,spacing); mask=SegmentationService().predict(prepared.array); components=detect_components(mask)
+    segmentation=SegmentationService(); prepared=preprocess(image,spacing); mask=segmentation.predict(prepared.array); components=detect_components(mask)
     visual=VisualizationService().generate(study_id,prepared.array,mask,components,settings.processed_dir)
     tumors=TumorAnalysisService().analyze(components,prepared.spacing); pairs=DistanceService().analyze(components,prepared.spacing)
     base="/files/"
-    result=AnalysisResult(study_id=study_id,tumor_count=len(tumors),tumors=tumors,pairwise_analysis=pairs,model=SegmentationService().model_info,image_shape=list(prepared.array.shape),voxel_spacing=list(prepared.spacing) if prepared.spacing else None,original_image_url=base+visual["original"].name,segmentation_url=base+visual["segmentation"].name,annotated_image_url=base+visual["annotated"].name,warnings=["Mock segmentation only; results are not diagnostic."] + ([] if components else ["No segmented regions detected by the mock threshold."]))
+    model_info=segmentation.model_info
+    warning="AI-assisted research/prototype output only; it is not a diagnosis and does not replace a radiologist or neurosurgeon." if model_info["status"]=="trained" else "Mock segmentation only; results are not diagnostic."
+    result=AnalysisResult(study_id=study_id,tumor_count=len(tumors),tumors=tumors,pairwise_analysis=pairs,model=model_info,image_shape=list(prepared.array.shape),voxel_spacing=list(prepared.spacing) if prepared.spacing else None,original_image_url=base+visual["original"].name,segmentation_url=base+visual["segmentation"].name,annotated_image_url=base+visual["annotated"].name,warnings=[warning] + ([] if components else ["No segmented regions detected by the segmentation model."]))
     payload=result.model_dump(); payload["metadata"]["assets"]={k:[p.name for p in v] if isinstance(v,list) else v.name for k,v in visual.items()}; save_study(study_id,study["filename"],payload)
     return result
 
