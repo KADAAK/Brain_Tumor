@@ -17,7 +17,7 @@ def resolve_dataset_paths(config: TrainingConfig) -> tuple[Path, Path]:
     images, masks = config.dataset_dir/config.image_dir_name, config.dataset_dir/config.mask_dir_name
     # Compatibility only: canonical lowercase folders take priority.
     canonical_has_files = images.is_dir() and masks.is_dir() and any(p.is_file() and p.suffix.lower() in IMAGE_SUFFIXES for p in images.iterdir()) and any(p.is_file() and p.suffix.lower() in IMAGE_SUFFIXES for p in masks.iterdir())
-    return (images, masks) if canonical_has_files else (config.dataset_dir/"Images", config.dataset_dir/"Marks")
+    return (images, masks) if canonical_has_files else (config.dataset_dir / "Images", config.dataset_dir / "Masks")
 
 def validate_dataset(config: TrainingConfig, write_report: bool = True) -> tuple[list[ImageMaskPair], dict]:
     images_dir, masks_dir = resolve_dataset_paths(config); errors: list[str] = []
