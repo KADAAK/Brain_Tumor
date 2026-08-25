@@ -78,3 +78,18 @@ el('pdf').onclick = async () => {
     status(`Report error: ${e.message}`);
   }
 };
+
+el('doctor-report').onclick = async () => {
+  if (!studyId) return;
+  status("Generating Doctor's Report PDF…");
+  try {
+    const r = await fetch(`/api/doctor-report/${studyId}`, { method: 'POST' });
+    const d = await r.json();
+    if (!r.ok) return status(`Doctor's report failed: ${d.detail}`);
+    window.open(d.download_url, '_blank');
+    status("Doctor's Report PDF ready.");
+  } catch (e) {
+    status(`Doctor's report error: ${e.message}`);
+  }
+};
+

@@ -131,6 +131,14 @@ button:disabled {
   cursor: not-allowed;
 }
 
+.report-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  margin-top: 4px;
+}
+
 .btn-pdf-header {
   background: #0284c7;
   padding: 6px 12px;
@@ -140,6 +148,17 @@ button:disabled {
 
 .btn-pdf-header:hover {
   background: #0369a1;
+}
+
+.btn-doctor-report {
+  background: #0f766e;
+  padding: 6px 12px;
+  font-size: 12px;
+  width: 100%;
+}
+
+.btn-doctor-report:hover {
+  background: #0d5f59;
 }
 
 .status {
