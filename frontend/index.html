@@ -1,4 +1,91 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Brain Tumor AI</title><link rel="stylesheet" href="css/style.css"></head><body>
-<header><div><span class="eyebrow">AI-ASSISTED IMAGING</span><h1>Brain Tumor MRI Analysis</h1></div><span class="badge">Mock model · v0.1</span></header>
-<main><section class="card upload"><h2>Upload MRI</h2><p>PNG, JPG, JPEG, or NIfTI (.nii/.nii.gz). DICOM support is prepared for a future adapter.</p><input id="file" type="file" accept=".png,.jpg,.jpeg,.nii,.nii.gz,.gz"><div class="actions"><button id="upload">Upload</button><button id="analyze" disabled>Analyze MRI</button></div><p id="status" class="status">Select an image to begin.</p></section>
-<section id="results" hidden><div class="metrics"><div class="card"><span>Segmented regions</span><strong id="count">0</strong></div><div class="card"><span>Model</span><strong id="model">mock</strong></div><div class="card"><span>Safety</span><strong>Review required</strong></div></div><section class="grid"><article class="card viewer"><h2>Annotated MRI</h2><img id="annotated" alt="Annotated MRI with red tumor boundaries"><p id="warning"></p></article><article class="card"><h2>Downloads</h2><p>Variable-length report with every detected segmented region.</p><div class="actions"><button id="pdf">Download PDF</button><button id="docx">Download DOCX</button></div></article></section><section class="card"><h2>Tumor Measurements</h2><div class="tablewrap"><table id="tumors"><thead><tr><th>ID</th><th>Area (px)</th><th>Size (W × H px)</th><th>Max diameter (px)</th><th>Centroid</th></tr></thead><tbody></tbody></table></div></section><section class="card"><h2>Pairwise Spatial Analysis</h2><div class="tablewrap"><table id="pairs"><thead><tr><th>Pair</th><th>Centroid distance (px)</th><th>Boundary gap (px)</th><th>Relative position</th></tr></thead><tbody></tbody></table></div></section></section></main><footer>AI-assisted image analysis only. It is not a medical diagnosis and requires qualified professional review.</footer><script src="js/app.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Brain Tumor AI Analysis</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header>
+  <div>
+    <span class="eyebrow">AI-ASSISTED IMAGING</span>
+    <h1>Brain Tumor MRI Analysis</h1>
+  </div>
+  <span class="badge">Diagnostic Assistant</span>
+</header>
+
+<main>
+  <section class="card upload">
+    <h2>Upload MRI Scan</h2>
+    <p>Upload a 2D slice, 3D volume (.nii/.nii.gz), or multi-frame sequence (PNG, JPG, JPEG, NIfTI).</p>
+    <div class="upload-row">
+      <input id="file" type="file" accept=".png,.jpg,.jpeg,.nii,.nii.gz,.gz">
+      <div class="actions">
+        <button id="upload">Upload</button>
+        <button id="analyze" disabled>Analyze MRI</button>
+      </div>
+    </div>
+    <p id="status" class="status">Select an image to begin.</p>
+  </section>
+
+  <section id="results" hidden>
+    <div class="metrics">
+      <div class="card metric-card"><span>Detected Lesions</span><strong id="count">0</strong></div>
+      <div class="card metric-card"><span>Model Engine</span><strong id="model">mock</strong></div>
+      <div class="card metric-card"><span>Report</span><button id="pdf" class="btn-pdf-header">Download PDF Report</button></div>
+    </div>
+
+    <div class="results-layout">
+      <article class="card viewer">
+        <div class="card-header">
+          <h2>Annotated MRI</h2>
+        </div>
+        <img id="annotated" alt="Annotated MRI with tumor boundaries">
+        <p id="warning"></p>
+      </article>
+
+      <div class="tables-column">
+        <section class="card compact-card">
+          <h2>Tumor Measurements</h2>
+          <div class="tablewrap">
+            <table id="tumors">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Area (px)</th>
+                  <th>Size (W × H)</th>
+                  <th>Max Diam</th>
+                  <th>Centroid</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="card compact-card">
+          <h2>Pairwise Spatial Analysis</h2>
+          <div class="tablewrap">
+            <table id="pairs">
+              <thead>
+                <tr>
+                  <th>Pair</th>
+                  <th>Centroid Dist</th>
+                  <th>Boundary Gap</th>
+                  <th>Orientation</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>AI-assisted image analysis only. It is not a medical diagnosis and requires qualified professional review.</footer>
+<script src="js/app.js"></script>
+</body>
+</html>
