@@ -202,9 +202,16 @@ button:disabled {
 /* Compact Results Layout */
 .results-layout {
   display: grid;
-  grid-template-columns: 1.15fr 1fr;
-  gap: 12px;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 16px;
   align-items: start;
+}
+
+.viewer-column {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
 }
 
 .viewer {
@@ -222,13 +229,14 @@ button:disabled {
 
 .viewer img {
   width: 100%;
-  max-height: 420px;
+  aspect-ratio: 4 / 3;
+  max-height: 400px;
+  background: #080f14;
+  object-fit: contain;
+  border-radius: 6px;
+  border: 1px solid var(--line);
   display: block;
   margin: 0 auto;
-  border-radius: 6px;
-  background: #000;
-  object-fit: contain;
-  border: 1px solid var(--line);
 }
 
 #warning {
@@ -241,12 +249,86 @@ button:disabled {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  min-width: 0;
 }
+
 
 .compact-card {
   margin-bottom: 0;
   padding: 12px 14px;
 }
+
+.rec-card h2 {
+  color: #0f4c81;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.clickable-row {
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.clickable-row:hover {
+  background: #f0f7ff !important;
+}
+
+.region-badge {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10.5px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.region-badge.in {
+  background: #fff7ed;
+  color: #c2410c;
+  border: 1px solid #fed7aa;
+}
+
+.region-badge.global {
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+}
+
+.link-badge, .map-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.link-badge {
+  background: #e0f2fe;
+  color: #0369a1;
+  border: 1px solid #bae6fd;
+}
+
+.link-badge:hover {
+  background: #0284c7;
+  color: #ffffff;
+}
+
+.map-badge {
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+}
+
+.map-badge:hover {
+  background: #059669;
+  color: #ffffff;
+}
+
+
 
 .tablewrap {
   max-height: 175px;

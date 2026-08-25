@@ -43,13 +43,180 @@
     </div>
 
     <div class="results-layout">
-      <article class="card viewer">
-        <div class="card-header">
-          <h2>Annotated MRI</h2>
-        </div>
-        <img id="annotated" alt="Annotated MRI with tumor boundaries">
-        <p id="warning"></p>
-      </article>
+      <div class="viewer-column">
+        <article class="card viewer">
+          <div class="card-header">
+            <h2>Annotated MRI</h2>
+          </div>
+          <img id="annotated" alt="Annotated MRI with tumor boundaries">
+          <p id="warning"></p>
+        </article>
+
+        <section class="card compact-card rec-card">
+          <div class="card-header">
+            <h2>Suggested Doctors (Neuro-Oncology &amp; Neurosurgery Specialists)</h2>
+          </div>
+          <div class="tablewrap">
+            <table id="doctors">
+              <thead>
+                <tr>
+                  <th>Doctor Name</th>
+                  <th>Region</th>
+                  <th>Specialty &amp; Designation</th>
+                  <th>Hospital / Institution</th>
+                  <th>Key Focus</th>
+                  <th>Profile / Contact</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="clickable-row" onclick="window.open('https://www.hindujahospital.com/doctors/dr-b-k-misra', '_blank')">
+                  <td><strong>Dr. B. K. Misra, MS, MCh (AIIMS)</strong></td>
+                  <td><span class="region-badge in">🇮🇳 India</span></td>
+                  <td>Head of Neurosurgery &amp; Gamma Knife</td>
+                  <td>P. D. Hinduja National Hospital, Mumbai</td>
+                  <td>Skull Base Surgery, Acoustic Neuroma, Gliomas</td>
+                  <td><a href="https://www.hindujahospital.com/doctors/dr-b-k-misra" target="_blank" class="link-badge" onclick="event.stopPropagation()">View Profile ↗</a></td>
+                </tr>
+                <tr class="clickable-row" onclick="window.open('https://www.fortishealthcare.com/doctors/dr-sandeep-vaishya-185', '_blank')">
+                  <td><strong>Dr. Sandeep Vaishya, MS, MCh (AIIMS)</strong></td>
+                  <td><span class="region-badge in">🇮🇳 India</span></td>
+                  <td>Executive Director, Neurosurgery</td>
+                  <td>Fortis Memorial Research Institute, Gurugram</td>
+                  <td>Gamma Knife Radiosurgery, Deep Brain Tumors</td>
+                  <td><a href="https://www.fortishealthcare.com/doctors/dr-sandeep-vaishya-185" target="_blank" class="link-badge" onclick="event.stopPropagation()">View Profile ↗</a></td>
+                </tr>
+                <tr class="clickable-row" onclick="window.open('https://proton.apollohospitals.com/doctor/dr-rakesh-jalali/', '_blank')">
+                  <td><strong>Dr. Rakesh Jalali, MD</strong></td>
+                  <td><span class="region-badge in">🇮🇳 India</span></td>
+                  <td>Medical Director &amp; Lead Neuro-Oncologist</td>
+                  <td>Apollo Proton Cancer Centre, Chennai</td>
+                  <td>Proton Radiotherapy, High-Grade Gliomas</td>
+                  <td><a href="https://proton.apollohospitals.com/doctor/dr-rakesh-jalali/" target="_blank" class="link-badge" onclick="event.stopPropagation()">View Profile ↗</a></td>
+                </tr>
+                <tr class="clickable-row" onclick="window.open('https://www.medanta.org/doctors/dr-v-p-singh', '_blank')">
+                  <td><strong>Dr. V. P. Singh, MCh (AIIMS)</strong></td>
+                  <td><span class="region-badge in">🇮🇳 India</span></td>
+                  <td>Chairman of Neurosciences</td>
+                  <td>Medanta The Medicity, Delhi NCR</td>
+                  <td>CyberKnife Radiosurgery, Brain Tumors</td>
+                  <td><a href="https://www.medanta.org/doctors/dr-v-p-singh" target="_blank" class="link-badge" onclick="event.stopPropagation()">View Profile ↗</a></td>
+                </tr>
+                <tr class="clickable-row" onclick="window.open('https://www.hopkinsmedicine.org/profiles/results/directory/profile/0002161/henry-brem', '_blank')">
+                  <td><strong>Dr. Henry Brem, MD</strong></td>
+                  <td><span class="region-badge global">🇺🇸 USA</span></td>
+                  <td>Neurosurgeon-in-Chief</td>
+                  <td>Johns Hopkins Medicine, Baltimore</td>
+                  <td>Gliomas, Meningioma, Microsurgery</td>
+                  <td><a href="https://www.hopkinsmedicine.org/profiles/results/directory/profile/0002161/henry-brem" target="_blank" class="link-badge" onclick="event.stopPropagation()">View Profile ↗</a></td>
+                </tr>
+                <tr class="clickable-row" onclick="window.open('https://www.ucsfhealth.org/providers/dr-mitchel-berger', '_blank')">
+                  <td><strong>Dr. Mitchel S. Berger, MD</strong></td>
+                  <td><span class="region-badge global">🇺🇸 USA</span></td>
+                  <td>Director, Brain Tumor Center</td>
+                  <td>UCSF Medical Center, San Francisco</td>
+                  <td>Awake Brain Mapping, Glioma Resection</td>
+                  <td><a href="https://www.ucsfhealth.org/providers/dr-mitchel-berger" target="_blank" class="link-badge" onclick="event.stopPropagation()">View Profile ↗</a></td>
+                </tr>
+                <tr class="clickable-row" onclick="window.open('https://www.uclahealth.org/providers/linda-liau', '_blank')">
+                  <td><strong>Dr. Linda M. Liau, MD, PhD</strong></td>
+                  <td><span class="region-badge global">🇺🇸 USA</span></td>
+                  <td>Chair of Neurosurgery</td>
+                  <td>UCLA Health (Ronald Reagan), Los Angeles</td>
+                  <td>Brain Tumor Vaccines &amp; Immunotherapy</td>
+                  <td><a href="https://www.uclahealth.org/providers/linda-liau" target="_blank" class="link-badge" onclick="event.stopPropagation()">View Profile ↗</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="card compact-card rec-card">
+          <div class="card-header">
+            <h2>Suggested Clinics &amp; Hospitals (Brain Tumor Centers)</h2>
+          </div>
+          <div class="tablewrap">
+            <table id="hospitals">
+              <thead>
+                <tr>
+                  <th>Hospital / Medical Center</th>
+                  <th>Region</th>
+                  <th>Department / Specialized Center</th>
+                  <th>Location</th>
+                  <th>Specialized Facilities</th>
+                  <th>Google Maps Location</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="clickable-row" onclick="window.open('https://www.google.com/maps/search/?api=1&query=AIIMS+Neurosciences+Centre+New+Delhi', '_blank')">
+                  <td><strong>AIIMS Neurosciences Centre</strong></td>
+                  <td><span class="region-badge in">🇮🇳 India</span></td>
+                  <td>Dept. of Neurosurgery &amp; Gamma Knife</td>
+                  <td>New Delhi, India</td>
+                  <td>Intraoperative Ultrasound, Micro-Neurosurgical Suites</td>
+                  <td><a href="https://www.google.com/maps/search/?api=1&query=AIIMS+Neurosciences+Centre+New+Delhi" target="_blank" class="map-badge" onclick="event.stopPropagation()">Open in Maps 📍</a></td>
+                </tr>
+                <tr class="clickable-row" onclick="window.open('https://www.google.com/maps/search/?api=1&query=NIMHANS+Hospital+Bengaluru', '_blank')">
+                  <td><strong>NIMHANS (National Institute)</strong></td>
+                  <td><span class="region-badge in">🇮🇳 India</span></td>
+                  <td>Department of Neurosurgery &amp; Neuropathology</td>
+                  <td>Bengaluru, Karnataka, India</td>
+                  <td>Dedicated Brain Tumor Biorepository, Advanced Stereotaxy</td>
+                  <td><a href="https://www.google.com/maps/search/?api=1&query=NIMHANS+Hospital+Bengaluru" target="_blank" class="map-badge" onclick="event.stopPropagation()">Open in Maps 📍</a></td>
+                </tr>
+                <tr class="clickable-row" onclick="window.open('https://www.google.com/maps/search/?api=1&query=Apollo+Proton+Cancer+Centre+Chennai', '_blank')">
+                  <td><strong>Apollo Proton Cancer Centre</strong></td>
+                  <td><span class="region-badge in">🇮🇳 India</span></td>
+                  <td>Neuro-Oncology &amp; Proton Therapy</td>
+                  <td>Chennai, Tamil Nadu, India</td>
+                  <td>South Asia's 1st Pencil Beam Proton Radiosurgery Suite</td>
+                  <td><a href="https://www.google.com/maps/search/?api=1&query=Apollo+Proton+Cancer+Centre+Chennai" target="_blank" class="map-badge" onclick="event.stopPropagation()">Open in Maps 📍</a></td>
+                </tr>
+                <tr class="clickable-row" onclick="window.open('https://www.google.com/maps/search/?api=1&query=Tata+Memorial+Hospital+Parel+Mumbai', '_blank')">
+                  <td><strong>Tata Memorial Centre (TMC / ACTREC)</strong></td>
+                  <td><span class="region-badge in">🇮🇳 India</span></td>
+                  <td>Neuro-Oncology &amp; Surgical Oncology Division</td>
+                  <td>Mumbai, Maharashtra, India</td>
+                  <td>Comprehensive Brain Tumor Clinical Trials, Precision Radiotherapy</td>
+                  <td><a href="https://www.google.com/maps/search/?api=1&query=Tata+Memorial+Hospital+Parel+Mumbai" target="_blank" class="map-badge" onclick="event.stopPropagation()">Open in Maps 📍</a></td>
+                </tr>
+                <tr class="clickable-row" onclick="window.open('https://www.google.com/maps/search/?api=1&query=Medanta+The+Medicity+Gurugram', '_blank')">
+                  <td><strong>Medanta – The Medicity</strong></td>
+                  <td><span class="region-badge in">🇮🇳 India</span></td>
+                  <td>Institute of Neurosciences &amp; Brain Tumor Suite</td>
+                  <td>Gurugram, Delhi NCR, India</td>
+                  <td>CyberKnife Robotic Radiosurgery, Intraoperative Brain Suite</td>
+                  <td><a href="https://www.google.com/maps/search/?api=1&query=Medanta+The+Medicity+Gurugram" target="_blank" class="map-badge" onclick="event.stopPropagation()">Open in Maps 📍</a></td>
+                </tr>
+                <tr class="clickable-row" onclick="window.open('https://www.google.com/maps/search/?api=1&query=Mayo+Clinic+Rochester+MN', '_blank')">
+                  <td><strong>Mayo Clinic Comprehensive Cancer Center</strong></td>
+                  <td><span class="region-badge global">🇺🇸 USA</span></td>
+                  <td>Brain Tumor Program / Dept of Neurologic Surgery</td>
+                  <td>Rochester, MN, USA</td>
+                  <td>Intraoperative MRI, Particle Beam Therapy</td>
+                  <td><a href="https://www.google.com/maps/search/?api=1&query=Mayo+Clinic+Rochester+MN" target="_blank" class="map-badge" onclick="event.stopPropagation()">Open in Maps 📍</a></td>
+                </tr>
+                <tr class="clickable-row" onclick="window.open('https://www.google.com/maps/search/?api=1&query=MD+Anderson+Cancer+Center+Houston+TX', '_blank')">
+                  <td><strong>MD Anderson Cancer Center</strong></td>
+                  <td><span class="region-badge global">🇺🇸 USA</span></td>
+                  <td>Brain &amp; Spine Center</td>
+                  <td>Houston, TX, USA</td>
+                  <td>Comprehensive Neuro-Oncology Suites</td>
+                  <td><a href="https://www.google.com/maps/search/?api=1&query=MD+Anderson+Cancer+Center+Houston+TX" target="_blank" class="map-badge" onclick="event.stopPropagation()">Open in Maps 📍</a></td>
+                </tr>
+                <tr class="clickable-row" onclick="window.open('https://www.google.com/maps/search/?api=1&query=Johns+Hopkins+Hospital+Baltimore+MD', '_blank')">
+                  <td><strong>Johns Hopkins Comprehensive Brain Tumor Center</strong></td>
+                  <td><span class="region-badge global">🇺🇸 USA</span></td>
+                  <td>Department of Neurosurgery</td>
+                  <td>Baltimore, MD, USA</td>
+                  <td>Stereotactic Radiosurgery, Microsurgical Center</td>
+                  <td><a href="https://www.google.com/maps/search/?api=1&query=Johns+Hopkins+Hospital+Baltimore+MD" target="_blank" class="map-badge" onclick="event.stopPropagation()">Open in Maps 📍</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
 
       <div class="tables-column">
         <section class="card compact-card">
