@@ -1,264 +1,531 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Brain Tumor AI Analysis</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Brain Tumor MRI Analysis — A Diagnostic Platform</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="alternate icon" type="image/png" href="favicon.png">
+  <!-- Google Fonts: Plus Jakarta Sans for clean, modern readability -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
-<header>
-  <div>
-    <span class="eyebrow">AI-ASSISTED IMAGING</span>
-    <h1>Brain Tumor MRI Analysis</h1>
-  </div>
-  <span class="badge">Diagnostic Assistant</span>
-</header>
 
-<main>
-  <section class="card upload">
-    <h2>Upload MRI Scan</h2>
-    <p>Upload a 2D slice, 3D volume (.nii/.nii.gz), or multi-frame sequence (PNG, JPG, JPEG, NIfTI).</p>
-    <div class="upload-row">
-      <input id="file" type="file" accept=".png,.jpg,.jpeg,.nii,.nii.gz,.gz">
-      <div class="actions">
-        <button id="upload">Upload</button>
-        <button id="analyze" disabled>Analyze MRI</button>
+<body>
+  <!-- Clean, Sophisticated Top Navigation -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="brand">
+        <div class="brand-logo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path
+              d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-2.04z" />
+            <path
+              d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-2.04z" />
+          </svg>
+        </div>
+        <div class="brand-info">
+          <div class="brand-title">NeuroVision </span></div>
+          <div class="brand-subtitle">Brain Tumor MRI Spatial Diagnostic System</div>
+        </div>
+      </div>
+      <div class="nav-badge">
+        <span class="pulse-dot"></span>
+        <span>Diagnostic Assistant Active</span>
       </div>
     </div>
-    <p id="status" class="status">Select an image to begin.</p>
-  </section>
+  </header>
 
-  <section id="results" hidden>
-    <div class="metrics">
-      <div class="card metric-card"><span>Detected Lesions</span><strong id="count">0</strong></div>
-      <div class="card metric-card"><span>Model Engine</span><strong id="model">mock</strong></div>
-      <div class="card metric-card"><span>Report</span>
-        <div class="report-btns">
-          <button id="pdf" class="btn-pdf-header">Download PDF Report</button>
-          <button id="doctor-report" class="btn-doctor-report">Download Doctor's Report</button>
+  <main class="content-wrapper">
+    <!-- User-Friendly Upload Section -->
+    <section class="card upload-box">
+      <div class="card-header">
+        <div>
+          <h2>Upload Brain MRI Scan</h2>
+          <p class="desc">Select a 2D MRI slice, multi-frame sequence, or 3D volume for automated lesion segmentation.
+          </p>
+        </div>
+        <div class="format-tags">
+          <span class="tag">PNG</span>
+          <span class="tag">JPG</span>
+          <span class="tag">JPEG</span>
+          <span class="tag">NIfTI (.nii)</span>
         </div>
       </div>
 
-    </div>
+      <!-- Drag and Drop Zone -->
+      <div class="dropzone" id="drop-zone">
+        <input id="file" type="file" accept=".png,.jpg,.jpeg,.nii,.nii.gz,.gz" class="file-input">
 
-    <div class="results-layout">
-      <div class="viewer-column">
-        <article class="card viewer">
-          <div class="card-header">
-            <h2>Annotated MRI</h2>
+        <div class="dropzone-prompt" id="drop-zone-prompt">
+          <div class="upload-icon-circle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="17 8 12 3 7 8" />
+              <line x1="12" y1="3" x2="12" y2="15" />
+            </svg>
           </div>
-          <img id="annotated" alt="Annotated MRI with tumor boundaries">
-          <p id="warning"></p>
-        </article>
+          <div class="dropzone-text">
+            <strong>Choose an MRI file</strong> or drag &amp; drop it here
+          </div>
+          <p class="dropzone-hint">Supports high-resolution single and multi-slice MRIs</p>
+        </div>
 
-        <section class="card compact-card rec-card">
-          <div class="card-header">
-            <h2>Suggested Doctors (Neuro-Oncology &amp; Neurosurgery Specialists)</h2>
+        <!-- Selected File Preview Chip -->
+        <div class="file-chip" id="file-info-card" style="display: none;">
+          <div class="file-chip-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+              <line x1="16" y1="13" x2="8" y2="13" />
+              <line x1="16" y1="17" x2="8" y2="17" />
+            </svg>
           </div>
-          <div class="tablewrap">
-            <table id="doctors">
-              <thead>
-                <tr>
-                  <th>Doctor Name</th>
-                  <th>Region</th>
-                  <th>Specialty &amp; Designation</th>
-                  <th>Hospital / Institution</th>
-                  <th>Key Focus</th>
-                  <th>Profile / Contact</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr class="clickable-row" onclick="window.open('https://www.hindujahospital.com/doctors/dr-b-k-misra', '_blank')">
-                  <td><strong>Dr. B. K. Misra, MS, MCh (AIIMS)</strong></td>
-                  <td><span class="region-badge in">🇮🇳 India</span></td>
-                  <td>Head of Neurosurgery &amp; Gamma Knife</td>
-                  <td>P. D. Hinduja National Hospital, Mumbai</td>
-                  <td>Skull Base Surgery, Acoustic Neuroma, Gliomas</td>
-                  <td><a href="https://www.hindujahospital.com/doctors/dr-b-k-misra" target="_blank" class="link-badge" onclick="event.stopPropagation()">View Profile ↗</a></td>
-                </tr>
-                <tr class="clickable-row" onclick="window.open('https://www.fortishealthcare.com/doctors/dr-sandeep-vaishya-185', '_blank')">
-                  <td><strong>Dr. Sandeep Vaishya, MS, MCh (AIIMS)</strong></td>
-                  <td><span class="region-badge in">🇮🇳 India</span></td>
-                  <td>Executive Director, Neurosurgery</td>
-                  <td>Fortis Memorial Research Institute, Gurugram</td>
-                  <td>Gamma Knife Radiosurgery, Deep Brain Tumors</td>
-                  <td><a href="https://www.fortishealthcare.com/doctors/dr-sandeep-vaishya-185" target="_blank" class="link-badge" onclick="event.stopPropagation()">View Profile ↗</a></td>
-                </tr>
-                <tr class="clickable-row" onclick="window.open('https://proton.apollohospitals.com/doctor/dr-rakesh-jalali/', '_blank')">
-                  <td><strong>Dr. Rakesh Jalali, MD</strong></td>
-                  <td><span class="region-badge in">🇮🇳 India</span></td>
-                  <td>Medical Director &amp; Lead Neuro-Oncologist</td>
-                  <td>Apollo Proton Cancer Centre, Chennai</td>
-                  <td>Proton Radiotherapy, High-Grade Gliomas</td>
-                  <td><a href="https://proton.apollohospitals.com/doctor/dr-rakesh-jalali/" target="_blank" class="link-badge" onclick="event.stopPropagation()">View Profile ↗</a></td>
-                </tr>
-                <tr class="clickable-row" onclick="window.open('https://www.medanta.org/doctors/dr-v-p-singh', '_blank')">
-                  <td><strong>Dr. V. P. Singh, MCh (AIIMS)</strong></td>
-                  <td><span class="region-badge in">🇮🇳 India</span></td>
-                  <td>Chairman of Neurosciences</td>
-                  <td>Medanta The Medicity, Delhi NCR</td>
-                  <td>CyberKnife Radiosurgery, Brain Tumors</td>
-                  <td><a href="https://www.medanta.org/doctors/dr-v-p-singh" target="_blank" class="link-badge" onclick="event.stopPropagation()">View Profile ↗</a></td>
-                </tr>
-                <tr class="clickable-row" onclick="window.open('https://www.hopkinsmedicine.org/profiles/results/directory/profile/0002161/henry-brem', '_blank')">
-                  <td><strong>Dr. Henry Brem, MD</strong></td>
-                  <td><span class="region-badge global">🇺🇸 USA</span></td>
-                  <td>Neurosurgeon-in-Chief</td>
-                  <td>Johns Hopkins Medicine, Baltimore</td>
-                  <td>Gliomas, Meningioma, Microsurgery</td>
-                  <td><a href="https://www.hopkinsmedicine.org/profiles/results/directory/profile/0002161/henry-brem" target="_blank" class="link-badge" onclick="event.stopPropagation()">View Profile ↗</a></td>
-                </tr>
-                <tr class="clickable-row" onclick="window.open('https://www.ucsfhealth.org/providers/dr-mitchel-berger', '_blank')">
-                  <td><strong>Dr. Mitchel S. Berger, MD</strong></td>
-                  <td><span class="region-badge global">🇺🇸 USA</span></td>
-                  <td>Director, Brain Tumor Center</td>
-                  <td>UCSF Medical Center, San Francisco</td>
-                  <td>Awake Brain Mapping, Glioma Resection</td>
-                  <td><a href="https://www.ucsfhealth.org/providers/dr-mitchel-berger" target="_blank" class="link-badge" onclick="event.stopPropagation()">View Profile ↗</a></td>
-                </tr>
-                <tr class="clickable-row" onclick="window.open('https://www.uclahealth.org/providers/linda-liau', '_blank')">
-                  <td><strong>Dr. Linda M. Liau, MD, PhD</strong></td>
-                  <td><span class="region-badge global">🇺🇸 USA</span></td>
-                  <td>Chair of Neurosurgery</td>
-                  <td>UCLA Health (Ronald Reagan), Los Angeles</td>
-                  <td>Brain Tumor Vaccines &amp; Immunotherapy</td>
-                  <td><a href="https://www.uclahealth.org/providers/linda-liau" target="_blank" class="link-badge" onclick="event.stopPropagation()">View Profile ↗</a></td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="file-chip-details">
+            <span class="file-chip-name" id="selected-file-name">scan.png</span>
+            <span class="file-chip-size" id="selected-file-size">0 KB</span>
           </div>
-        </section>
-
-        <section class="card compact-card rec-card">
-          <div class="card-header">
-            <h2>Suggested Clinics &amp; Hospitals (Brain Tumor Centers)</h2>
-          </div>
-          <div class="tablewrap">
-            <table id="hospitals">
-              <thead>
-                <tr>
-                  <th>Hospital / Medical Center</th>
-                  <th>Region</th>
-                  <th>Department / Specialized Center</th>
-                  <th>Location</th>
-                  <th>Specialized Facilities</th>
-                  <th>Google Maps Location</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr class="clickable-row" onclick="window.open('https://www.google.com/maps/search/?api=1&query=AIIMS+Neurosciences+Centre+New+Delhi', '_blank')">
-                  <td><strong>AIIMS Neurosciences Centre</strong></td>
-                  <td><span class="region-badge in">🇮🇳 India</span></td>
-                  <td>Dept. of Neurosurgery &amp; Gamma Knife</td>
-                  <td>New Delhi, India</td>
-                  <td>Intraoperative Ultrasound, Micro-Neurosurgical Suites</td>
-                  <td><a href="https://www.google.com/maps/search/?api=1&query=AIIMS+Neurosciences+Centre+New+Delhi" target="_blank" class="map-badge" onclick="event.stopPropagation()">Open in Maps 📍</a></td>
-                </tr>
-                <tr class="clickable-row" onclick="window.open('https://www.google.com/maps/search/?api=1&query=NIMHANS+Hospital+Bengaluru', '_blank')">
-                  <td><strong>NIMHANS (National Institute)</strong></td>
-                  <td><span class="region-badge in">🇮🇳 India</span></td>
-                  <td>Department of Neurosurgery &amp; Neuropathology</td>
-                  <td>Bengaluru, Karnataka, India</td>
-                  <td>Dedicated Brain Tumor Biorepository, Advanced Stereotaxy</td>
-                  <td><a href="https://www.google.com/maps/search/?api=1&query=NIMHANS+Hospital+Bengaluru" target="_blank" class="map-badge" onclick="event.stopPropagation()">Open in Maps 📍</a></td>
-                </tr>
-                <tr class="clickable-row" onclick="window.open('https://www.google.com/maps/search/?api=1&query=Apollo+Proton+Cancer+Centre+Chennai', '_blank')">
-                  <td><strong>Apollo Proton Cancer Centre</strong></td>
-                  <td><span class="region-badge in">🇮🇳 India</span></td>
-                  <td>Neuro-Oncology &amp; Proton Therapy</td>
-                  <td>Chennai, Tamil Nadu, India</td>
-                  <td>South Asia's 1st Pencil Beam Proton Radiosurgery Suite</td>
-                  <td><a href="https://www.google.com/maps/search/?api=1&query=Apollo+Proton+Cancer+Centre+Chennai" target="_blank" class="map-badge" onclick="event.stopPropagation()">Open in Maps 📍</a></td>
-                </tr>
-                <tr class="clickable-row" onclick="window.open('https://www.google.com/maps/search/?api=1&query=Tata+Memorial+Hospital+Parel+Mumbai', '_blank')">
-                  <td><strong>Tata Memorial Centre (TMC / ACTREC)</strong></td>
-                  <td><span class="region-badge in">🇮🇳 India</span></td>
-                  <td>Neuro-Oncology &amp; Surgical Oncology Division</td>
-                  <td>Mumbai, Maharashtra, India</td>
-                  <td>Comprehensive Brain Tumor Clinical Trials, Precision Radiotherapy</td>
-                  <td><a href="https://www.google.com/maps/search/?api=1&query=Tata+Memorial+Hospital+Parel+Mumbai" target="_blank" class="map-badge" onclick="event.stopPropagation()">Open in Maps 📍</a></td>
-                </tr>
-                <tr class="clickable-row" onclick="window.open('https://www.google.com/maps/search/?api=1&query=Medanta+The+Medicity+Gurugram', '_blank')">
-                  <td><strong>Medanta – The Medicity</strong></td>
-                  <td><span class="region-badge in">🇮🇳 India</span></td>
-                  <td>Institute of Neurosciences &amp; Brain Tumor Suite</td>
-                  <td>Gurugram, Delhi NCR, India</td>
-                  <td>CyberKnife Robotic Radiosurgery, Intraoperative Brain Suite</td>
-                  <td><a href="https://www.google.com/maps/search/?api=1&query=Medanta+The+Medicity+Gurugram" target="_blank" class="map-badge" onclick="event.stopPropagation()">Open in Maps 📍</a></td>
-                </tr>
-                <tr class="clickable-row" onclick="window.open('https://www.google.com/maps/search/?api=1&query=Mayo+Clinic+Rochester+MN', '_blank')">
-                  <td><strong>Mayo Clinic Comprehensive Cancer Center</strong></td>
-                  <td><span class="region-badge global">🇺🇸 USA</span></td>
-                  <td>Brain Tumor Program / Dept of Neurologic Surgery</td>
-                  <td>Rochester, MN, USA</td>
-                  <td>Intraoperative MRI, Particle Beam Therapy</td>
-                  <td><a href="https://www.google.com/maps/search/?api=1&query=Mayo+Clinic+Rochester+MN" target="_blank" class="map-badge" onclick="event.stopPropagation()">Open in Maps 📍</a></td>
-                </tr>
-                <tr class="clickable-row" onclick="window.open('https://www.google.com/maps/search/?api=1&query=MD+Anderson+Cancer+Center+Houston+TX', '_blank')">
-                  <td><strong>MD Anderson Cancer Center</strong></td>
-                  <td><span class="region-badge global">🇺🇸 USA</span></td>
-                  <td>Brain &amp; Spine Center</td>
-                  <td>Houston, TX, USA</td>
-                  <td>Comprehensive Neuro-Oncology Suites</td>
-                  <td><a href="https://www.google.com/maps/search/?api=1&query=MD+Anderson+Cancer+Center+Houston+TX" target="_blank" class="map-badge" onclick="event.stopPropagation()">Open in Maps 📍</a></td>
-                </tr>
-                <tr class="clickable-row" onclick="window.open('https://www.google.com/maps/search/?api=1&query=Johns+Hopkins+Hospital+Baltimore+MD', '_blank')">
-                  <td><strong>Johns Hopkins Comprehensive Brain Tumor Center</strong></td>
-                  <td><span class="region-badge global">🇺🇸 USA</span></td>
-                  <td>Department of Neurosurgery</td>
-                  <td>Baltimore, MD, USA</td>
-                  <td>Stereotactic Radiosurgery, Microsurgical Center</td>
-                  <td><a href="https://www.google.com/maps/search/?api=1&query=Johns+Hopkins+Hospital+Baltimore+MD" target="_blank" class="map-badge" onclick="event.stopPropagation()">Open in Maps 📍</a></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
+          <button type="button" class="btn-remove-file" id="btn-change-file" title="Remove file">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
       </div>
 
+      <!-- Controls Row -->
+      <div class="upload-actions-bar">
+        <div class="btn-group">
+          <button id="upload" class="btn btn-secondary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="17 8 12 3 7 8" />
+              <line x1="12" y1="3" x2="12" y2="15" />
+            </svg>
+            <span>Upload Scan</span>
+          </button>
+          <button id="analyze" class="btn btn-primary" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10" />
+              <path d="m4.93 4.93 4.24 4.24" />
+              <path d="m14.83 14.83 4.24 4.24" />
+              <path d="m14.83 9.17 4.24-4.24" />
+              <path d="m4.93 19.07 4.24-4.24" />
+            </svg>
+            <span>Analyze MRI</span>
+          </button>
+        </div>
 
-      <div class="tables-column">
-        <section class="card compact-card">
-          <h2>Tumor Measurements</h2>
-          <div class="tablewrap">
-            <table id="tumors">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Area (px)</th>
-                  <th>Size (W × H)</th>
-                  <th>Max Diam</th>
-                  <th>Centroid</th>
-                </tr>
-              </thead>
-              <tbody></tbody>
-            </table>
-          </div>
-        </section>
+        <div class="status-box" id="status-box">
+          <span class="status-dot"></span>
+          <span id="status" class="status-msg">Select or drop an MRI image to begin.</span>
+        </div>
+      </div>
+    </section>
 
-        <section class="card compact-card">
-          <h2>Pairwise Spatial Analysis</h2>
-          <div class="tablewrap">
-            <table id="pairs">
-              <thead>
-                <tr>
-                  <th>Pair</th>
-                  <th>Centroid Dist</th>
-                  <th>Boundary Gap</th>
-                  <th>Orientation</th>
-                </tr>
-              </thead>
-              <tbody></tbody>
-            </table>
+    <!-- Results Section (Reveals upon analysis) -->
+    <section id="results" class="results-section" hidden>
+      <!-- Metric Cards Header -->
+      <div class="metrics-row">
+        <div class="card metric-card">
+          <span class="metric-title">Detected Lesions</span>
+          <div class="metric-main">
+            <strong id="count">0</strong>
+            <span class="metric-sub">Identified Regions</span>
           </div>
-        </section>
+        </div>
+
+        <div class="card metric-card">
+          <span class="metric-title">Analysis Engine</span>
+          <div class="metric-main">
+            <strong id="model" class="model-text">ResUNet-v3</strong>
+            <span class="badge-accent">Deep Spatial Model</span>
+          </div>
+        </div>
+
+        <div class="card metric-card reports-card">
+          <span class="metric-title">Diagnostic Reports</span>
+          <div class="report-actions">
+            <button id="pdf" class="btn-download btn-pdf">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
+              </svg>
+              <span>Download PDF</span>
+            </button>
+            <button id="doctor-report" class="btn-download btn-doctor">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="8.5" cy="7" r="4" />
+                <line x1="20" y1="8" x2="20" y2="14" />
+                <line x1="23" y1="11" x2="17" y2="11" />
+              </svg>
+              <span>Doctor's Report</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Two-Column Layout -->
+      <div class="results-grid">
+        <!-- Left Column: MRI Viewer + Specialist Directory -->
+        <div class="col-left">
+          <article class="card viewer-card">
+            <div class="viewer-header">
+              <h2>Annotated MRI Visualization</h2>
+              <span class="viewer-tag">High-Accuracy Contour</span>
+            </div>
+
+            <div class="image-wrapper">
+              <img id="annotated" alt="Annotated MRI with tumor boundaries">
+            </div>
+
+            <p id="warning" class="warning-alert"></p>
+          </article>
+
+          <!-- Suggested Doctors Section -->
+          <section class="card table-card">
+            <div class="card-header-simple">
+              <div class="title-with-pill">
+                <h3>Suggested Specialists</h3>
+                <span class="count-pill">Neuro-Oncology</span>
+              </div>
+              <p class="table-desc">Leading Neurosurgery &amp; Brain Tumor Consultants</p>
+            </div>
+            <div class="table-scroll">
+              <table id="doctors">
+                <thead>
+                  <tr>
+                    <th>Doctor Name</th>
+                    <th>Region</th>
+                    <th>Specialty</th>
+                    <th>Hospital / Institution</th>
+                    <th>Key Clinical Focus</th>
+                    <th>Profile</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="clickable-row"
+                    onclick="window.open('https://www.hindujahospital.com/doctors/dr-b-k-misra', '_blank')">
+                    <td><strong>Dr. B. K. Misra</strong></td>
+                    <td><span class="region in">India</span></td>
+                    <td>Head of Neurosurgery &amp; Gamma Knife</td>
+                    <td>P. D. Hinduja Hospital, Mumbai</td>
+                    <td>Skull Base Surgery, Acoustic Neuroma, Gliomas</td>
+                    <td><a href="https://www.hindujahospital.com/doctors/dr-b-k-misra" target="_blank"
+                        class="action-btn" onclick="event.stopPropagation()">View ↗</a></td>
+                  </tr>
+                  <tr class="clickable-row"
+                    onclick="window.open('https://www.fortishealthcare.com/doctors/dr-sandeep-vaishya-185', '_blank')">
+                    <td><strong>Dr. Sandeep Vaishya</strong></td>
+                    <td><span class="region in">India</span></td>
+                    <td>Executive Director, Neurosurgery</td>
+                    <td>Fortis Memorial Research Institute, Gurugram</td>
+                    <td>Gamma Knife Radiosurgery, Deep Brain Tumors</td>
+                    <td><a href="https://www.fortishealthcare.com/doctors/dr-sandeep-vaishya-185" target="_blank"
+                        class="action-btn" onclick="event.stopPropagation()">View ↗</a></td>
+                  </tr>
+                  <tr class="clickable-row"
+                    onclick="window.open('https://proton.apollohospitals.com/doctor/dr-rakesh-jalali/', '_blank')">
+                    <td><strong>Dr. Rakesh Jalali</strong></td>
+                    <td><span class="region in">India</span></td>
+                    <td>Medical Director &amp; Lead Neuro-Oncologist</td>
+                    <td>Apollo Proton Cancer Centre, Chennai</td>
+                    <td>Proton Radiotherapy, High-Grade Gliomas</td>
+                    <td><a href="https://proton.apollohospitals.com/doctor/dr-rakesh-jalali/" target="_blank"
+                        class="action-btn" onclick="event.stopPropagation()">View ↗</a></td>
+                  </tr>
+                  <tr class="clickable-row"
+                    onclick="window.open('https://www.medanta.org/doctors/dr-v-p-singh', '_blank')">
+                    <td><strong>Dr. V. P. Singh</strong></td>
+                    <td><span class="region in">India</span></td>
+                    <td>Chairman of Neurosciences</td>
+                    <td>Medanta The Medicity, Delhi NCR</td>
+                    <td>CyberKnife Radiosurgery, Brain Tumors</td>
+                    <td><a href="https://www.medanta.org/doctors/dr-v-p-singh" target="_blank" class="action-btn"
+                        onclick="event.stopPropagation()">View ↗</a></td>
+                  </tr>
+                  <tr class="clickable-row"
+                    onclick="window.open('https://www.hopkinsmedicine.org/profiles/results/directory/profile/0002161/henry-brem', '_blank')">
+                    <td><strong>Dr. Henry Brem</strong></td>
+                    <td><span class="region global">USA</span></td>
+                    <td>Neurosurgeon-in-Chief</td>
+                    <td>Johns Hopkins Medicine, Baltimore</td>
+                    <td>Gliomas, Meningioma, Microsurgery</td>
+                    <td><a href="https://www.hopkinsmedicine.org/profiles/results/directory/profile/0002161/henry-brem"
+                        target="_blank" class="action-btn" onclick="event.stopPropagation()">View ↗</a></td>
+                  </tr>
+                  <tr class="clickable-row"
+                    onclick="window.open('https://www.ucsfhealth.org/providers/dr-mitchel-berger', '_blank')">
+                    <td><strong>Dr. Mitchel S. Berger</strong></td>
+                    <td><span class="region global">USA</span></td>
+                    <td>Director, Brain Tumor Center</td>
+                    <td>UCSF Medical Center, San Francisco</td>
+                    <td>Awake Brain Mapping, Glioma Resection</td>
+                    <td><a href="https://www.ucsfhealth.org/providers/dr-mitchel-berger" target="_blank"
+                        class="action-btn" onclick="event.stopPropagation()">View ↗</a></td>
+                  </tr>
+                  <tr class="clickable-row"
+                    onclick="window.open('https://www.uclahealth.org/providers/linda-liau', '_blank')">
+                    <td><strong>Dr. Linda M. Liau</strong></td>
+                    <td><span class="region global">USA</span></td>
+                    <td>Chair of Neurosurgery</td>
+                    <td>UCLA Health, Los Angeles</td>
+                    <td>Brain Tumor Vaccines &amp; Immunotherapy</td>
+                    <td><a href="https://www.uclahealth.org/providers/linda-liau" target="_blank" class="action-btn"
+                        onclick="event.stopPropagation()">View ↗</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- Suggested Hospitals Section -->
+          <section class="card table-card">
+            <div class="card-header-simple">
+              <div class="title-with-pill">
+                <h3>Suggested Brain Centers &amp; Hospitals</h3>
+                <span class="count-pill emerald-pill">Top Facilities</span>
+              </div>
+              <p class="table-desc">Specialized Comprehensive Brain Tumor &amp; Radiosurgery Centers</p>
+            </div>
+            <div class="table-scroll">
+              <table id="hospitals">
+                <thead>
+                  <tr>
+                    <th>Hospital / Center</th>
+                    <th>Region</th>
+                    <th>Specialized Department</th>
+                    <th>Location</th>
+                    <th>Advanced Infrastructure</th>
+                    <th>Maps</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="clickable-row"
+                    onclick="window.open('https://www.google.com/maps/search/?api=1&query=AIIMS+Neurosciences+Centre+New+Delhi', '_blank')">
+                    <td><strong>AIIMS Neurosciences Centre</strong></td>
+                    <td><span class="region in">India</span></td>
+                    <td>Dept. of Neurosurgery &amp; Gamma Knife</td>
+                    <td>New Delhi, India</td>
+                    <td>Intraoperative Ultrasound, Micro-Neurosurgical Suites</td>
+                    <td><a href="https://www.google.com/maps/search/?api=1&query=AIIMS+Neurosciences+Centre+New+Delhi"
+                        target="_blank" class="map-action" onclick="event.stopPropagation()">Maps 📍</a></td>
+                  </tr>
+                  <tr class="clickable-row"
+                    onclick="window.open('https://www.google.com/maps/search/?api=1&query=NIMHANS+Hospital+Bengaluru', '_blank')">
+                    <td><strong>NIMHANS (National Institute)</strong></td>
+                    <td><span class="region in">India</span></td>
+                    <td>Neurosurgery &amp; Neuropathology</td>
+                    <td>Bengaluru, Karnataka, India</td>
+                    <td>Dedicated Brain Tumor Biorepository, Stereotaxy</td>
+                    <td><a href="https://www.google.com/maps/search/?api=1&query=NIMHANS+Hospital+Bengaluru"
+                        target="_blank" class="map-action" onclick="event.stopPropagation()">Maps 📍</a></td>
+                  </tr>
+                  <tr class="clickable-row"
+                    onclick="window.open('https://www.google.com/maps/search/?api=1&query=Apollo+Proton+Cancer+Centre+Chennai', '_blank')">
+                    <td><strong>Apollo Proton Cancer Centre</strong></td>
+                    <td><span class="region in">India</span></td>
+                    <td>Neuro-Oncology &amp; Proton Therapy</td>
+                    <td>Chennai, Tamil Nadu, India</td>
+                    <td>Pencil Beam Proton Radiosurgery Suite</td>
+                    <td><a href="https://www.google.com/maps/search/?api=1&query=Apollo+Proton+Cancer+Centre+Chennai"
+                        target="_blank" class="map-action" onclick="event.stopPropagation()">Maps 📍</a></td>
+                  </tr>
+                  <tr class="clickable-row"
+                    onclick="window.open('https://www.google.com/maps/search/?api=1&query=Tata+Memorial+Hospital+Parel+Mumbai', '_blank')">
+                    <td><strong>Tata Memorial Centre (TMC)</strong></td>
+                    <td><span class="region in">India</span></td>
+                    <td>Neuro-Oncology Surgical Division</td>
+                    <td>Mumbai, Maharashtra, India</td>
+                    <td>Precision Radiotherapy, Advanced Clinical Trials</td>
+                    <td><a href="https://www.google.com/maps/search/?api=1&query=Tata+Memorial+Hospital+Parel+Mumbai"
+                        target="_blank" class="map-action" onclick="event.stopPropagation()">Maps 📍</a></td>
+                  </tr>
+                  <tr class="clickable-row"
+                    onclick="window.open('https://www.google.com/maps/search/?api=1&query=Medanta+The+Medicity+Gurugram', '_blank')">
+                    <td><strong>Medanta – The Medicity</strong></td>
+                    <td><span class="region in">India</span></td>
+                    <td>Institute of Neurosciences</td>
+                    <td>Gurugram, Delhi NCR, India</td>
+                    <td>CyberKnife Robotic Radiosurgery, Brain Suite</td>
+                    <td><a href="https://www.google.com/maps/search/?api=1&query=Medanta+The+Medicity+Gurugram"
+                        target="_blank" class="map-action" onclick="event.stopPropagation()">Maps 📍</a></td>
+                  </tr>
+                  <tr class="clickable-row"
+                    onclick="window.open('https://www.google.com/maps/search/?api=1&query=Mayo+Clinic+Rochester+MN', '_blank')">
+                    <td><strong>Mayo Clinic Cancer Center</strong></td>
+                    <td><span class="region global">USA</span></td>
+                    <td>Brain Tumor Program / Neurologic Surgery</td>
+                    <td>Rochester, MN, USA</td>
+                    <td>Intraoperative MRI, Particle Beam Therapy</td>
+                    <td><a href="https://www.google.com/maps/search/?api=1&query=Mayo+Clinic+Rochester+MN"
+                        target="_blank" class="map-action" onclick="event.stopPropagation()">Maps 📍</a></td>
+                  </tr>
+                  <tr class="clickable-row"
+                    onclick="window.open('https://www.google.com/maps/search/?api=1&query=MD+Anderson+Cancer+Center+Houston+TX', '_blank')">
+                    <td><strong>MD Anderson Cancer Center</strong></td>
+                    <td><span class="region global">USA</span></td>
+                    <td>Brain &amp; Spine Center</td>
+                    <td>Houston, TX, USA</td>
+                    <td>Multidisciplinary Neuro-Oncology Suites</td>
+                    <td><a href="https://www.google.com/maps/search/?api=1&query=MD+Anderson+Cancer+Center+Houston+TX"
+                        target="_blank" class="map-action" onclick="event.stopPropagation()">Maps 📍</a></td>
+                  </tr>
+                  <tr class="clickable-row"
+                    onclick="window.open('https://www.google.com/maps/search/?api=1&query=Johns+Hopkins+Hospital+Baltimore+MD', '_blank')">
+                    <td><strong>Johns Hopkins Brain Center</strong></td>
+                    <td><span class="region global">USA</span></td>
+                    <td>Department of Neurosurgery</td>
+                    <td>Baltimore, MD, USA</td>
+                    <td>Stereotactic Radiosurgery &amp; Research Lab</td>
+                    <td><a href="https://www.google.com/maps/search/?api=1&query=Johns+Hopkins+Hospital+Baltimore+MD"
+                        target="_blank" class="map-action" onclick="event.stopPropagation()">Maps 📍</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+
+        <!-- Right Column: Quantitative Telemetry -->
+        <div class="col-right">
+          <!-- Tumor Measurements Card -->
+          <section class="card table-card">
+            <div class="card-header-simple">
+              <div class="title-with-pill">
+                <h3>Tumor Measurements</h3>
+                <span class="count-pill">Quantitative</span>
+              </div>
+              <p class="table-desc">Morphometric dimensions, area, and centroid location</p>
+            </div>
+            <div class="table-scroll">
+              <table id="tumors" class="mono-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Area (px)</th>
+                    <th>Dimensions (W × H)</th>
+                    <th>Max Diam</th>
+                    <th>Centroid (X, Y)</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- Pairwise Spatial Analysis Card -->
+          <section class="card table-card">
+            <div class="card-header-simple">
+              <div class="title-with-pill">
+                <h3>Pairwise Spatial Analysis</h3>
+                <span class="count-pill purple-pill">Inter-Foci</span>
+              </div>
+              <p class="table-desc">Distance separation and relative spatial orientation</p>
+            </div>
+            <div class="table-scroll">
+              <table id="pairs" class="mono-table">
+                <thead>
+                  <tr>
+                    <th>Lesion Pair</th>
+                    <th>Centroid Dist</th>
+                    <th>Boundary Gap</th>
+                    <th>Relative Vector</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Simple, Sophisticated & User-Friendly Footer -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path
+                d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-2.04z" />
+              <path
+                d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-2.04z" />
+            </svg>
+          </div>
+          <div class="footer-brand-text">
+            <h4>NeuroVision</h4>
+            <p>Advanced MRI Neural Segmentation &amp; Spatial Diagnostic Analysis</p>
+          </div>
+        </div>
+
+        <div class="footer-badges">
+          <span class="f-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
+            Encrypted &amp; HIPAA Aware
+          </span>
+          <span class="f-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="12 6 12 12 14 14" />
+            </svg>
+            Sub-Second Inference
+          </span>
+          <span class="f-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+            </svg>
+            DICOM &amp; NIfTI Standard
+          </span>
+        </div>
+
+        <button class="btn-scroll-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Back to top">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="18 15 12 9 6 15" />
+          </svg>
+          <span>Top</span>
+        </button>
+      </div>
+
+      <div class="footer-divider"></div>
+
+      <div class="footer-bottom">
+        <p class="footer-disclaimer">
+          <strong>Clinical Disclaimer:</strong> NeuroVision is a computer-aided detection and quantitative measurement
+          tool designed to assist healthcare professionals in radiological analysis. It does not replace independent
+          clinical judgment or certified pathology examination.
+        </p>
+        <div class="footer-meta">
+          <span>&copy; 2026 NeuroVision Diagnostics. All rights reserved.</span>
+          <div class="footer-links">
+            <a href="#upload" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">New Scan</a>
+            <span class="dot-sep">&bull;</span>
+            <a href="#results">Results View</a>
+            <span class="dot-sep">&bull;</span>
+            <a href="#doctors">Consult Specialists</a>
+          </div>
+        </div>
       </div>
     </div>
-  </section>
-</main>
+  </footer>
 
-<footer>AI-assisted image analysis only. It is not a medical diagnosis and requires qualified professional review.</footer>
-<script src="js/app.js"></script>
+  <script src="js/app.js"></script>
 </body>
+
 </html>

@@ -271,8 +271,8 @@ def generate_doctor_report(
         fontSize=10.5,
         textColor=WHITE,
         backColor=ACCENT_BLUE,
-        spaceBefore=10,
-        spaceAfter=6,
+        spaceBefore=4,
+        spaceAfter=4,
         leading=15,
         leftIndent=-4,
         rightIndent=-4,
@@ -369,23 +369,25 @@ def generate_doctor_report(
     story.append(Spacer(1, 8))
 
     # ── SECTION 1 – ORIGINAL MRI ─────────────────────────────────────────────
-    story.append(Paragraph("1.  Original MRI Scan", section_head))
-    story.append(Spacer(1, 3))
     img_w = W
     img_h = W * 0.65
-    if original_image.exists():
-        story.append(Image(str(original_image), width=img_w, height=img_h))
-    else:
-        story.append(Paragraph("[Original scan image]", body_style))
+    orig_img_elem = Image(str(original_image), width=img_w, height=img_h) if original_image.exists() \
+        else Paragraph("[Original scan image]", body_style)
+    story.append(KeepTogether([
+        Paragraph("1.  Original MRI Scan", section_head),
+        Spacer(1, 2),
+        orig_img_elem,
+    ]))
     story.append(Spacer(1, 8))
 
     # ── SECTION 2 – SEGMENTED MRI ────────────────────────────────────────────
-    story.append(Paragraph("2.  Lesion Delineation &amp; Volumetric Segmentation", section_head))
-    story.append(Spacer(1, 3))
-    if segmented_image.exists():
-        story.append(Image(str(segmented_image), width=img_w, height=img_h))
-    else:
-        story.append(Paragraph("[Segmented scan image]", body_style))
+    seg_img_elem = Image(str(segmented_image), width=img_w, height=img_h) if segmented_image.exists() \
+        else Paragraph("[Segmented scan image]", body_style)
+    story.append(KeepTogether([
+        Paragraph("2.  Lesion Delineation &amp; Volumetric Segmentation", section_head),
+        Spacer(1, 2),
+        seg_img_elem,
+    ]))
     story.append(Spacer(1, 8))
 
     # ── SECTION 3 – RADIOLOGY REPORT ─────────────────────────────────────────
@@ -407,9 +409,6 @@ def generate_doctor_report(
     story.append(Spacer(1, 6))
 
     # ── SECTION 4 – PATIENT CARE & LIFESTYLE RECOMMENDATIONS ──────────────────
-    story.append(Paragraph("4.  Patient Care Guidelines &amp; Lifestyle Recommendations", section_head))
-    story.append(Spacer(1, 4))
-
     def _create_rec_card(title: str, items: list[str], header_bg: colors.Color, row_bg: colors.Color, border_col: colors.Color):
         """Helper to create a beautifully styled recommendation table card."""
         head_cell = Paragraph(title, card_head_style)
@@ -437,6 +436,8 @@ def generate_doctor_report(
 
     # Precautions
     story.append(KeepTogether([
+        Paragraph("4.  Patient Care Guidelines &amp; Lifestyle Recommendations", section_head),
+        Spacer(1, 2),
         _create_rec_card("Important Precautions to Take", recs["precautions"], WARN_HEAD_BG, WARN_ROW_BG, WARN_BORDER)
     ]))
     story.append(Spacer(1, 6))
@@ -460,9 +461,6 @@ def generate_doctor_report(
     story.append(Spacer(1, 10))
 
     # ── SECTION 5 – SIGNATURE ────────────────────────────────────────────────
-    story.append(HRFlowable(width="100%", thickness=1, color=MID_GRAY))
-    story.append(Spacer(1, 6))
-
     sig_table_data = [[]]
     if signature_image.exists():
         sig_img = Image(str(signature_image), width=2.2 * inch, height=0.70 * inch)
@@ -496,16 +494,21 @@ def generate_doctor_report(
         ("VALIGN",      (0, 0), (-1, -1), "MIDDLE"),
         ("LEFTPADDING", (0, 0), (-1, -1), 0),
     ]))
-    story.append(KeepTogether([sig_wrapper]))
-    story.append(Spacer(1, 6))
-    story.append(HRFlowable(width="100%", thickness=1, color=MID_GRAY))
-    story.append(Spacer(1, 4))
-    story.append(Paragraph(
-        "This medical document is intended for authorized clinical review and patient management. "
-        "All imaging findings should be correlated with clinical history and specialist consultation. "
-        "NeuroScan Imaging &amp; Diagnostic Centre | Department of Neuroradiology",
-        disclaimer_style,
-    ))
+    
+    story.append(KeepTogether([
+        HRFlowable(width="100%", thickness=1, color=MID_GRAY),
+        Spacer(1, 6),
+        sig_wrapper,
+        Spacer(1, 6),
+        HRFlowable(width="100%", thickness=1, color=MID_GRAY),
+        Spacer(1, 4),
+        Paragraph(
+            "This medical document is intended for authorized clinical review and patient management. "
+            "All imaging findings should be correlated with clinical history and specialist consultation. "
+            "NeuroScan Imaging &amp; Diagnostic Centre | Department of Neuroradiology",
+            disclaimer_style,
+        )
+    ]))
 
     doc.build(story)
     return destination
