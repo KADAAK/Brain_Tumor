@@ -134,6 +134,7 @@ el('analyze').onclick = async () => {
     const d = await r.json();
     if (!r.ok) throw Error(d.detail);
     show(d);
+    el('scan-another').hidden = false;
     status(`Analysis completed successfully. Identified ${d.tumor_count} lesion region(s).`, 'complete');
   } catch (e) {
     status(`Analysis failed: ${e.message}`, 'error');
@@ -206,8 +207,32 @@ el('doctor-report').onclick = async () => {
     const d = await r.json();
     if (!r.ok) return status(`Doctor's report failed: ${d.detail}`, 'error');
     window.open(d.download_url, '_blank');
-    status("Doctor's Comprehensive Report PDF opened.", 'complete');
+    status(`Doctor's Comprehensive Report PDF opened.`, 'complete');
   } catch (e) {
     status(`Doctor's report error: ${e.message}`, 'error');
   }
+};
+
+// Scan Another — full UI reset
+el('scan-another').onclick = () => {
+  // Reset file input & dropzone
+  fileInput.value = '';
+  promptView.style.display = 'flex';
+  fileInfoCard.style.display = 'none';
+
+  // Reset buttons
+  el('analyze').disabled = true;
+  el('scan-another').hidden = true;
+
+  // Hide results
+  el('results').hidden = true;
+
+  // Clear state
+  studyId = null;
+
+  // Reset status
+  status('Select or drop an MRI image to begin.', 'default');
+
+  // Scroll back to top
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 };
