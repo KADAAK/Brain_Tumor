@@ -14,3 +14,6 @@ data/*.db
 ml/checkpoints/*.pth
 ml/outputs/*
 !ml/outputs/.gitkeep
+
+.vercel
+.env*
