@@ -25,6 +25,8 @@ HOW TO RUN
   # Use only BCE loss, enable flips:
   python train_unet.py --loss bce --horizontal-flip --vertical-flip
 
+  #python train_unet.py --dataset-dir D:\Brain_Tumor\archive --epochs 10 --batch-size 4 --loss bce_dice
+
 OUTPUT
 ------
   ml/checkpoints/brain_tumor_unet_best.pth   <- Best model checkpoint
