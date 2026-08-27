@@ -28,6 +28,12 @@ The system features two independent report generation workflows:
 
 ---
 
+## 📜 Documentation 
+
+**LINK** : https://docs.google.com/document/d/1K_M7b6QvNCOdVm9TDvnlv52LdaheqBqNYFcBD9Kg3ic/edit?tab=t.0
+
+---
+
 ## ✨ Key Features
 
 | Feature | Description |
