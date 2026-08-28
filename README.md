@@ -1,4 +1,4 @@
-# 🧠 NeuroVision AI — Advanced Brain Tumor MRI Segmentation & Diagnostic Platform
+# 🧠 NeuroVision AI — Advanced Brain Tumor MRI        Segmentation & Diagnostic Platform
 
 <div align="center">
 
